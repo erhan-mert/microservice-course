@@ -16,4 +16,6 @@ public interface EmployeeRepository {
 
 	Optional<Employee> remove(TcKimlikNo identity);
 
+	void update(Employee employee);
+
 }

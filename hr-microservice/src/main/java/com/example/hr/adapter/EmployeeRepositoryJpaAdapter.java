@@ -43,4 +43,10 @@ public class EmployeeRepositoryJpaAdapter implements EmployeeRepository {
 		return entity.map( emp -> modelMapper.map(emp, Employee.class));
 	}
 
+	@Override
+	@Transactional
+	public void update(Employee employee) {
+		employeeEntityRepository.save(modelMapper.map(employee, EmployeeEntity.class));
+	}
+
 }

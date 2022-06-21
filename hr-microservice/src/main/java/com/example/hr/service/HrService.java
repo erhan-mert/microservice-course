@@ -9,9 +9,11 @@ import com.example.hr.application.business.exception.EmployeeNotFoundException;
 import com.example.hr.domain.Employee;
 import com.example.hr.domain.TcKimlikNo;
 import com.example.hr.dto.request.HireEmployeeRequest;
+import com.example.hr.dto.request.UpdateEmployeeSalaryRequest;
 import com.example.hr.dto.response.EmployeeResponse;
 import com.example.hr.dto.response.FireEmployeeResponse;
 import com.example.hr.dto.response.HireEmployeeResponse;
+import com.example.hr.dto.response.UpdateEmployeeSalaryResponse;
 
 @Service
 public class HrService {
@@ -41,9 +43,18 @@ public class HrService {
 
 	public EmployeeResponse findEmployee(String identity) {
 		TcKimlikNo kimlik = TcKimlikNo.valueOf(identity);
-		return hrApplication.getEmployeeInformation(kimlik)
-				            .map( emp -> modelMapper.map(emp, EmployeeResponse.class))
-				            .orElseThrow( () -> new EmployeeNotFoundException(kimlik));
+		return hrApplication.getEmployeeInformation(kimlik).map(emp -> modelMapper.map(emp, EmployeeResponse.class))
+				.map(emp -> { emp.setStatus("ok"); return emp;})
+				.orElseThrow(() -> new EmployeeNotFoundException(kimlik));
+	}
+
+	@Transactional
+	public UpdateEmployeeSalaryResponse updateEmployeeSalary(String identity, UpdateEmployeeSalaryRequest request) {
+		TcKimlikNo kimlik = TcKimlikNo.valueOf(identity);
+		var employee = hrApplication.updateSalary(kimlik, request.getRate());
+		if (employee.isEmpty())
+			throw new EmployeeNotFoundException(kimlik);
+		return new UpdateEmployeeSalaryResponse("success");
 	}
 
 }

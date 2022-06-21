@@ -10,6 +10,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class EmployeeNotFoundException extends RuntimeException {
+public class EmployeeNotFoundException extends HrException {
 	private final TcKimlikNo identity;
 }

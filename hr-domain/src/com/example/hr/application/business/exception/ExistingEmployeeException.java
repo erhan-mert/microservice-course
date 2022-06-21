@@ -10,7 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class ExistingEmployeeException extends RuntimeException {
+public class ExistingEmployeeException extends HrException {
 
 	private final TcKimlikNo identity;
 

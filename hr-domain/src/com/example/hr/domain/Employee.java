@@ -192,4 +192,9 @@ public class Employee {
 				+ ", birthYear=" + birthYear + ", jobStyle=" + jobStyle + ", department=" + department + "]";
 	}
 
+	public void increaseSalary(double rate) {
+		this.salary = salary.multiply(rate);
+		
+	}
+
 }

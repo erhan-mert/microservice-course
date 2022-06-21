@@ -11,4 +11,5 @@ public interface HrApplication {
 	Employee hireEmployee(Employee employee);
 	Optional<Employee> fireEmployee(TcKimlikNo identity);
 	Optional<Employee> getEmployeeInformation(TcKimlikNo identity);
+	Optional<Employee> updateSalary(TcKimlikNo identity,double rate);
 }

@@ -58,4 +58,8 @@ public final class Money {
 		return "Money [value=" + value + ", currency=" + currency + "]";
 	}
 
+	public Money multiply(double rate) {
+		return Money.of((1.0 +rate)*value, this.currency);
+	}
+
 }
