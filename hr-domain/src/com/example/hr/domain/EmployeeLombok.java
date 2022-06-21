@@ -1,7 +1,5 @@
 package com.example.hr.domain;
 
-import java.util.Objects;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
