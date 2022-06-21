@@ -9,6 +9,7 @@ import com.example.hr.domain.Employee;
 import com.example.hr.domain.FullName;
 import com.example.hr.dto.request.HireEmployeeRequest;
 import com.example.hr.dto.response.EmployeeResponse;
+import com.example.hr.entity.EmployeeEntity;
 
 @Configuration
 public class ModelMapperConfig {
@@ -28,6 +29,22 @@ public class ModelMapperConfig {
 				           .build();
 	};
 	
+	
+	private static final Converter<EmployeeEntity,Employee> 
+	EMPLOYEE_ENTITY_TO_EMPLOYEE_CONVERTER = context -> {
+		var entity = context.getSource();
+		return new Employee.Builder()
+				.tcKimlikNo(entity.getIdentity())
+				.fullName(entity.getFirstName(), entity.getLastName())
+				.iban(entity.getIban())
+				.salary(entity.getSalary(),entity.getCurrency())
+				.birthYear(entity.getBirthYear())
+				.photo(entity.getPhoto())
+				.jobStyle(entity.getJobStyle().name())
+				.department(entity.getDepartment().name())
+				.build();
+	};
+	
 	private static final Converter<Employee,EmployeeResponse> 
 	EMPLOYEE_TO_EMPLOYEE_RESPONSE_CONVERTER = context -> {
 		var employee = context.getSource();
@@ -45,11 +62,31 @@ public class ModelMapperConfig {
 		return response;
 	};
 
+	
+	private static final Converter<Employee,EmployeeEntity> 
+	EMPLOYEE_TO_EMPLOYEE_ENTITY_CONVERTER = context -> {
+		var employee = context.getSource();
+		var entity = new EmployeeEntity();
+		entity.setIdentity(employee.getTcKimlikNo().getValue());
+		FullName fullName = employee.getFullName();
+		entity.setFirstName(fullName.getFirstName());
+		entity.setLastName(fullName.getLastName());
+		entity.setIban(employee.getIban().getValue());
+		entity.setSalary(employee.getSalary().getValue());
+		entity.setCurrency(employee.getSalary().getCurrency());
+		entity.setDepartment(employee.getDepartment());
+		entity.setJobStyle(employee.getJobStyle());
+		entity.setPhoto(employee.getPhoto().getValues());
+		return entity;
+	};
+	
 	@Bean
 	ModelMapper modelMapper() {
 		var modelMapper = new ModelMapper();
 		modelMapper.addConverter(HIRE_EMPLOYEE_REQUEST_TO_EMPLOYEE_CONVERTER, HireEmployeeRequest.class, Employee.class);
 		modelMapper.addConverter(EMPLOYEE_TO_EMPLOYEE_RESPONSE_CONVERTER, Employee.class, EmployeeResponse.class);
+		modelMapper.addConverter(EMPLOYEE_TO_EMPLOYEE_ENTITY_CONVERTER, Employee.class, EmployeeEntity.class);
+		modelMapper.addConverter(EMPLOYEE_ENTITY_TO_EMPLOYEE_CONVERTER, EmployeeEntity.class, Employee.class);
 		return modelMapper;
 	}
 }
