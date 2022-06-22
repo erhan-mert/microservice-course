@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.example.hr.document.EmployeeDocument;
 import com.example.hr.domain.Employee;
 import com.example.hr.domain.FullName;
 import com.example.hr.dto.request.HireEmployeeRequest;
@@ -45,6 +46,22 @@ public class ModelMapperConfig {
 				.build();
 	};
 	
+	
+	private static final Converter<EmployeeDocument,Employee> 
+	EMPLOYEE_DOCUMENT_TO_EMPLOYEE_CONVERTER = context -> {
+		var document = context.getSource();
+		return new Employee.Builder()
+				.tcKimlikNo(document.getIdentity())
+				.fullName(document.getFirstName(), document.getLastName())
+				.iban(document.getIban())
+				.salary(document.getSalary(),document.getCurrency())
+				.birthYear(document.getBirthYear())
+				.photo(document.getPhoto())
+				.jobStyle(document.getJobStyle().name())
+				.department(document.getDepartment().name())
+				.build();
+	};
+	
 	private static final Converter<Employee,EmployeeResponse> 
 	EMPLOYEE_TO_EMPLOYEE_RESPONSE_CONVERTER = context -> {
 		var employee = context.getSource();
@@ -82,6 +99,25 @@ public class ModelMapperConfig {
 		return entity;
 	};
 	
+	
+	private static final Converter<Employee,EmployeeDocument> 
+	EMPLOYEE_TO_EMPLOYEE_DOCUMENT_CONVERTER = context -> {
+		var employee = context.getSource();
+		var document = new EmployeeDocument();
+		document.setIdentity(employee.getTcKimlikNo().getValue());
+		FullName fullName = employee.getFullName();
+		document.setFirstName(fullName.getFirstName());
+		document.setLastName(fullName.getLastName());
+		document.setIban(employee.getIban().getValue());
+		document.setSalary(employee.getSalary().getValue());
+		document.setCurrency(employee.getSalary().getCurrency());
+		document.setDepartment(employee.getDepartment());
+		document.setJobStyle(employee.getJobStyle());
+		document.setBirthYear(employee.getBirthYear().getValue());
+		document.setPhoto(employee.getPhoto().getBase64Values());
+		return document;
+	};
+	
 	@Bean
 	ModelMapper modelMapper() {
 		var modelMapper = new ModelMapper();
@@ -89,6 +125,8 @@ public class ModelMapperConfig {
 		modelMapper.addConverter(EMPLOYEE_TO_EMPLOYEE_RESPONSE_CONVERTER, Employee.class, EmployeeResponse.class);
 		modelMapper.addConverter(EMPLOYEE_TO_EMPLOYEE_ENTITY_CONVERTER, Employee.class, EmployeeEntity.class);
 		modelMapper.addConverter(EMPLOYEE_ENTITY_TO_EMPLOYEE_CONVERTER, EmployeeEntity.class, Employee.class);
+		modelMapper.addConverter(EMPLOYEE_TO_EMPLOYEE_DOCUMENT_CONVERTER, Employee.class, EmployeeDocument.class);
+		modelMapper.addConverter(EMPLOYEE_DOCUMENT_TO_EMPLOYEE_CONVERTER, EmployeeDocument.class, Employee.class);
 		return modelMapper;
 	}
 }
