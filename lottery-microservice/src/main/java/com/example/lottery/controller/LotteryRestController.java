@@ -33,7 +33,7 @@ public class LotteryRestController {
 	
 	@GetMapping(params="column")
 	public List<List<Integer>> getLotteryNumbers(@RequestParam @Min(3) @Max(20) int column){
-		System.out.println("New request has arrived at ".formatted(port));
+		System.out.println("New request has arrived at %d".formatted(port));
 		return lotteryService.getLotteryNumbers(column);
 	}
 	
