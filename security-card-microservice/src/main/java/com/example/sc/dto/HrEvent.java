@@ -10,4 +10,7 @@ import lombok.ToString;
 @ToString
 public class HrEvent {
 	private Identity identity;
+	private String eventId;
+	private long sequence;
+	private String eventType;
 }

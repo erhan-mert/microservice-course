@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import com.example.sc.dto.HrEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@SuppressWarnings("deprecation")
 @Service
 public class HrEventKafkaListener {
 	private ObjectMapper mapper;
@@ -20,7 +21,7 @@ public class HrEventKafkaListener {
 	public void listenHrEvents(String event) throws Exception {
 		System.err.println(Thread.currentThread().getName().concat(" is handling hr event..."));
 		var hrEvent= mapper.readValue(event, HrEvent.class);
-		System.out.println(Thread.currentThread().getName()+": "+"New event has arrived: %s".formatted(hrEvent));
+		System.err.println(Thread.currentThread().getName()+": "+"New event has arrived from kafka: %s".formatted(hrEvent));
 		var restTemplate = new RestTemplate();
 		String kimlik = hrEvent.getIdentity().getValue();
 		// REST ON HTTP -- Sync.
