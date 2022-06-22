@@ -58,6 +58,7 @@ public class ModelMapperConfig {
 		response.setCurrency(employee.getSalary().getCurrency());
 		response.setDepartment(employee.getDepartment());
 		response.setJobStyle(employee.getJobStyle());
+		response.setBirthYear(employee.getBirthYear().getValue());
 		response.setPhoto(employee.getPhoto().getBase64Values());
 		return response;
 	};
@@ -76,6 +77,7 @@ public class ModelMapperConfig {
 		entity.setCurrency(employee.getSalary().getCurrency());
 		entity.setDepartment(employee.getDepartment());
 		entity.setJobStyle(employee.getJobStyle());
+		entity.setBirthYear(employee.getBirthYear().getValue());
 		entity.setPhoto(employee.getPhoto().getValues());
 		return entity;
 	};
