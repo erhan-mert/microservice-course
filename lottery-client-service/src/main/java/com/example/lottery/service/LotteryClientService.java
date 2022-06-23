@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-@Service
+//@Service
 public class LotteryClientService {
 	private final DiscoveryClient discoveryClient;
 	private List<ServiceInstance> instances;
