@@ -1,5 +1,7 @@
 package com.example.crm.repository;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
 import com.example.crm.document.CustomerDocument;
@@ -11,4 +13,7 @@ public interface CustomerDocumentReactiveRepository extends ReactiveMongoReposit
 	Mono<CustomerDocument> findOneByEmail(String email);
 
 	Flux<CustomerDocument> findAllByBirthYearBetween(int fromYear, int toYear);
+
+	@Query("{}")
+	Flux<CustomerDocument> findAll(PageRequest page);
 }
