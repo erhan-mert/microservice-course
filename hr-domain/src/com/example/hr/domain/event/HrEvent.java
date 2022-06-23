@@ -1,13 +1,23 @@
 package com.example.hr.domain.event;
 
+import java.time.ZonedDateTime;
+import java.util.UUID;
+
 import com.example.hr.domain.TcKimlikNo;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
+@Setter
 public class HrEvent {
-	private final TcKimlikNo identity;
+	private TcKimlikNo identity;
+	private String eventId = UUID.randomUUID().toString();
+	private long sequence = ZonedDateTime.now().toEpochSecond();
+	private HrEventType eventType;
+	public HrEvent(TcKimlikNo identity, HrEventType eventType) {
+		this.identity = identity;
+		this.eventType = eventType;
+	}
 	
 }

@@ -2,6 +2,7 @@ package com.example.lottery.service;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,7 @@ public class LotteryService {
 	}
 	
 	public List<List<Integer>> getLotteryNumbers(int column){
+		try { TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(500, 5000));}catch(Exception e) {}
 		return IntStream.range(0, column)
 				        .mapToObj( i -> draw() )
 				        .toList();

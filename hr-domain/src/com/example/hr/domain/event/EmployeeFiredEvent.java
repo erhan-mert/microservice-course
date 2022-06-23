@@ -7,7 +7,7 @@ import com.example.hr.domain.TcKimlikNo;
 public class EmployeeFiredEvent extends HrEvent {
 
 	public EmployeeFiredEvent(TcKimlikNo identity) {
-		super(identity);
+		super(identity, HrEventType.EMPLOYEE_FIRED);
 	}
 
 }
